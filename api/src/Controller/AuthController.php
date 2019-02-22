@@ -2,7 +2,7 @@
 
 namespace App\Controller;
 
-use App\Service\AuthService;
+use App\Service\SecurityService;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Swagger\Annotations as SWG;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -30,10 +30,10 @@ class AuthController extends Controller
      * @SWG\Tag(name="authorization")
      *
      * @param Request $request
-     * @param AuthService $auth
+     * @param SecurityService $auth
      * @return JsonResponse
      */
-    public function login(Request $request, AuthService $auth)
+    public function login(Request $request, SecurityService $auth)
     {
         try {
             $token = $auth->login(
@@ -59,10 +59,10 @@ class AuthController extends Controller
      * @SWG\Tag(name="authorization")
      *
      * @param Request $request
-     * @param AuthService $auth
+     * @param SecurityService $auth
      * @return JsonResponse
      */
-    public function signup(Request $request, AuthService $auth)
+    public function signup(Request $request, SecurityService $auth)
     {
         try {
             $auth->signup(
@@ -88,11 +88,11 @@ class AuthController extends Controller
      * @SWG\Tag(name="authorization")
      *
      * @param Request $request
-     * @param AuthService $auth
+     * @param SecurityService $auth
      * @param $token
      * @return JsonResponse
      */
-    public function signupConfirm(Request $request, AuthService $auth, $token)
+    public function signupConfirm(Request $request, SecurityService $auth, $token)
     {
         try {
             $auth->signupConfirm($auth->getEnvironment($request->getHost()), $token);
@@ -115,10 +115,10 @@ class AuthController extends Controller
      * @SWG\Tag(name="authorization")
      *
      * @param Request $request
-     * @param AuthService $auth
+     * @param SecurityService $auth
      * @return JsonResponse
      */
-    public function forgot(Request $request, AuthService $auth)
+    public function forgot(Request $request, SecurityService $auth)
     {
         try {
             $auth->forgot(
@@ -144,11 +144,11 @@ class AuthController extends Controller
      * @SWG\Tag(name="authorization")
      *
      * @param Request $request
-     * @param AuthService $auth
+     * @param SecurityService $auth
      * @param $token
      * @return JsonResponse
      */
-    public function reset(Request $request, AuthService $auth, $token)
+    public function reset(Request $request, SecurityService $auth, $token)
     {
         try {
             $auth->reset(
@@ -175,10 +175,10 @@ class AuthController extends Controller
      * @SWG\Tag(name="authorization")
      *
      * @param Request $request
-     * @param AuthService $auth
+     * @param SecurityService $auth
      * @return JsonResponse
      */
-    public function createEnvironment(Request $request, AuthService $auth)
+    public function createEnvironment(Request $request, SecurityService $auth)
     {
         try {
             $auth->createEnvironment(
@@ -203,11 +203,11 @@ class AuthController extends Controller
      * )
      * @SWG\Tag(name="authorization")
      *
-     * @param AuthService $auth
+     * @param SecurityService $auth
      * @param $token
      * @return JsonResponse
      */
-    public function confirmCreateEnvironment(AuthService $auth, $token)
+    public function confirmCreateEnvironment(SecurityService $auth, $token)
     {
         try {
             $auth->confirmCreateEnvironment($token);

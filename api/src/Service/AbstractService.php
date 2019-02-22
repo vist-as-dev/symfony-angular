@@ -6,11 +6,10 @@ use Doctrine\ORM\EntityManagerInterface;
 
 abstract class AbstractService
 {
-    /** @var EntityManagerInterface */
     private $_em;
 
     /**
-     * @return EntityManagerInterface
+     * @return EntityManagerInterface|null
      */
     public function getEm(): ?EntityManagerInterface
     {
@@ -19,9 +18,13 @@ abstract class AbstractService
 
     /**
      * @param EntityManagerInterface $em
+     *
+     * @return AbstractService
      */
-    public function setEm(?EntityManagerInterface $em): void
+    public function setEm(EntityManagerInterface $em): self
     {
         $this->_em = $em;
+
+        return $this;
     }
 }

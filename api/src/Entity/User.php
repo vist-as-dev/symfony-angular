@@ -141,7 +141,7 @@ class User implements UserInterface
 
     public function getConfirmationToken(): ?string
     {
-        return $this->confirmation_token;
+        return $this->confirmationToken;
     }
 
     public function setConfirmationToken(?string $confirmationToken): self
@@ -156,7 +156,7 @@ class User implements UserInterface
         return $this->signatureToken;
     }
 
-    public function setSignature(?string $signatureToken): self
+    public function setSignatureToken(?string $signatureToken): self
     {
         $this->signatureToken = $signatureToken;
 

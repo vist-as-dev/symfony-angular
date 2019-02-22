@@ -2,27 +2,20 @@
 
 namespace App\Service;
 
-use App\Entity\Reference\Environment\Environment;
-use App\Entity\Reference\User\UserDetailMeta;
-use App\Entity\Registry\UserLastLogin;
-use App\Entity\User\IUserRoles;
-use App\Entity\User\User;
-use App\Entity\User\UserDetailData;
-use App\Model\TraitLogger;
-use App\Model\User\UserStatus;
+use App\Entity\User;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\EntityManagerInterface;
+use Lcobucci\JWT\Token;
 use Lcobucci\JWT\Builder;
 use Lcobucci\JWT\Signer\Hmac\Sha256;
-use Lcobucci\JWT\Token;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
-class AuthService extends AbstractService
+class SecurityService extends AbstractService
 {
     use
         TraitEncoder,
