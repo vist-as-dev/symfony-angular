@@ -44,14 +44,19 @@ class User implements UserInterface
     private $createdAt;
 
     /**
+     * @ORM\Column(type="string", length=128, nullable=true)
+     */
+    private $salt;
+
+    /**
      * @ORM\Column(type="string", name="confirmation_token", length=128, nullable=true)
      */
     private $confirmationToken;
 
     /**
-     * @ORM\Column(type="string", name="signature_token", length=128, nullable=true)
+     * @ORM\Column(type="datetime", name="last_activity")
      */
-    private $signatureToken;
+    private $lastActivity;
 
     public function getId(): ?int
     {
@@ -128,6 +133,14 @@ class User implements UserInterface
     public function getSalt()
     {
         // not needed when using the "bcrypt" algorithm in security.yaml
+        return $this->salt;
+    }
+
+    public function setSalt(string $salt): self
+    {
+        $this->salt = $salt;
+
+        return $this;
     }
 
     /**
@@ -151,14 +164,33 @@ class User implements UserInterface
         return $this;
     }
 
-    public function getSignatureToken(): ?string
+    /**
+     * @return \DateTimeInterface
+     */
+    public function getLastActivity()
     {
-        return $this->signatureToken;
+        return $this->lastActivity;
     }
 
-    public function setSignatureToken(?string $signatureToken): self
+    /**
+     * @return int
+     */
+    public function getLastActivityTimestamp()
     {
-        $this->signatureToken = $signatureToken;
+        return $this->getLastActivity() instanceof \DateTime
+            ? $this->getLastActivity()->getTimestamp()
+            : 0
+        ;
+    }
+
+    /**
+     * @param \DateTimeInterface $lastActivity
+     *
+     * @return User
+     */
+    public function setLastActivity(\DateTimeInterface $lastActivity): self
+    {
+        $this->lastActivity = $lastActivity;
 
         return $this;
     }

@@ -23,12 +23,6 @@ class AuthController extends Controller
      * @Route("/login", name="login")
      * @Method({"POST"})
      *
-     * @SWG\Response(
-     *     response=200,
-     *     description="Affiliates and management login"
-     * )
-     * @SWG\Tag(name="authorization")
-     *
      * @param Request $request
      * @param SecurityService $auth
      * @return JsonResponse

@@ -9,9 +9,9 @@ abstract class AbstractService
     private $_em;
 
     /**
-     * @return EntityManagerInterface|null
+     * @return EntityManagerInterface
      */
-    public function getEm(): ?EntityManagerInterface
+    public function getEm(): EntityManagerInterface
     {
         return $this->_em;
     }

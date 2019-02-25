@@ -233,11 +233,17 @@
             "ref": "3db029c03e452b4a23f7fc45cec7c922c2247eb8"
         }
     },
+    "symfony/twig-bridge": {
+        "version": "v4.2.3"
+    },
     "symfony/var-exporter": {
         "version": "v4.2.3"
     },
     "symfony/yaml": {
         "version": "v4.2.3"
+    },
+    "twig/twig": {
+        "version": "v2.6.2"
     },
     "zendframework/zend-code": {
         "version": "3.3.1"

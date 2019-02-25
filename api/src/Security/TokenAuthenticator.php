@@ -6,6 +6,7 @@ use App\Entity\User;
 use Lcobucci\JWT\Token;
 use Lcobucci\JWT\Parser;
 use Lcobucci\JWT\Signer\Hmac\Sha256;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -17,6 +18,13 @@ use Symfony\Component\Security\Core\Exception\AuthenticationException;
 
 class TokenAuthenticator extends AbstractGuardAuthenticator
 {
+    private $em;
+
+    public function __construct(EntityManagerInterface $em)
+    {
+        $this->em = $em;
+    }
+
     public function supports(Request $request)
     {
         return $request->headers->has('X-AUTH-TOKEN');
@@ -44,10 +52,22 @@ class TokenAuthenticator extends AbstractGuardAuthenticator
             return null;
         }
 
-        return
-            $credentials['token'] instanceof Token
-            && $credentials['token']->verify(new Sha256(), $user->getSignatureToken())
-        ;
+        if (!($credentials['token'] instanceof Token)) {
+            return null;
+        }
+
+        if (!$credentials['token']->verify(new Sha256(), $user->getSalt())) {
+            return null;
+        }
+
+        if (time() > ($user->getLastActivityTimestamp() + getenv('USER_TOKEN_LIFETIME'))) {
+            return null;
+        } else {
+            $user->setLastActivity(new \DateTime());
+            $this->em->flush();
+        }
+
+        return true;
     }
 
     public function onAuthenticationFailure(Request $request, AuthenticationException $e)
