@@ -14,7 +14,7 @@ class CORSSubscriber implements EventSubscriberInterface
         $response->headers->set('Access-Control-Allow-Origin', '*');
         $response->headers->set(
             'Access-Control-Allow-Headers',
-            'Origin, X-Requested-With, Content-Type, Accept, Authorization, X-AUTH-TOKEN, X-AUTH-HOST, X-AUTH-AS');
+            'Origin, X-Requested-With, Content-Type, Accept, Authorization, X-AUTH-TOKEN');
         $response->headers->set('Access-Control-Allow-Methods', 'POST, GET, OPTIONS, HEAD, DELETE, PUT');
         $response->headers->set('Allow', 'POST, GET, OPTIONS, HEAD, DELETE, PUT');
     }
