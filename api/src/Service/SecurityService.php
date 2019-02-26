@@ -137,6 +137,7 @@ class SecurityService extends AbstractService
         }
 
         $user->setConfirmationToken(random_bytes(32));
+        $user->setCreatedAt(new \DateTime());
         $user->setLastActivity(new \DateTime());
 
         $this->getEm()->flush();
