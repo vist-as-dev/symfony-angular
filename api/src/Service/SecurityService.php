@@ -3,6 +3,14 @@
 namespace App\Service;
 
 use App\Entity\User;
+use App\Exception\Security\AccessDeniedException;
+use App\Exception\Security\ConfirmationTokenExpiredException;
+use App\Exception\Security\ConfirmationTokenNotFoundException;
+use App\Exception\Security\EmailAlreadyRegisteredException;
+use App\Exception\Security\EmailInvalidException;
+use App\Exception\Security\PasswordInvalidException;
+use App\Exception\Security\PasswordRequiredException;
+use App\Exception\Security\UserNotFoundException;
 use App\Service\Traits\TraitEncoder;
 use App\Service\Traits\TraitLogger;
 use App\Service\Traits\TraitMailer;
@@ -15,9 +23,6 @@ use Psr\Log\LoggerInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Swift_Mailer;
 use Symfony\Component\HttpFoundation\RequestStack;
-use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
-use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Twig_Environment;
 
@@ -59,11 +64,12 @@ class SecurityService extends AbstractService
 
     /**
      * @param string $email
+     *
      * @throws \Exception
      */
     public function register(string $email)
     {
-        $this->validateEmail($email);
+        $this->validateEmail($email, true);
 
         $user = new User();
         $user->setEmail($email);
@@ -94,11 +100,11 @@ class SecurityService extends AbstractService
         $user = $this->getEm()->getRepository(User::class)->findOneBy(['email' => $email]);
 
         if (!$user) {
-            throw new NotFoundHttpException('User not found');
+            throw new UserNotFoundException();
         }
 
         if (!$this->getEncoder()->isPasswordValid($user, $password)) {
-            throw new AccessDeniedHttpException('Password incorrect');
+            throw new AccessDeniedException();
         }
 
         $user->setLastActivity(new \DateTime());
@@ -129,7 +135,7 @@ class SecurityService extends AbstractService
         $user = $this->getEm()->getRepository(User::class)->findOneBy(['email' => $email,]);
 
         if (!$user) {
-            throw new NotFoundHttpException('User not found');
+            throw new UserNotFoundException();
         }
 
         $user->setConfirmationToken(
@@ -157,11 +163,11 @@ class SecurityService extends AbstractService
         $user = $this->getEm()->getRepository(User::class)->findOneBy(['confirmation_token' => $token]);
 
         if (!$user) {
-            throw new NotFoundHttpException('User not found or token has been used. Try again.');
+            throw new ConfirmationTokenNotFoundException();
         }
 
         if (time() > ($user->getLastActivityTimestamp() + getenv('CONFIRMATION_TOKEN_LIFETIME'))) {
-            throw new AccessDeniedHttpException('Token expired');
+            throw new ConfirmationTokenExpiredException();
         } else {
             $user->setLastActivity(new \DateTime());
         }
@@ -174,16 +180,16 @@ class SecurityService extends AbstractService
 
     /**
      * @param string $email
-     * @throws \Exception
+     * @param bool $isNew
      */
-    private function validateEmail(string $email)
+    private function validateEmail(string $email, $isNew = false)
     {
         if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-            throw new BadRequestHttpException('Email format incorrect');
+            throw new EmailInvalidException();
         }
 
-        if ($this->getEm()->getRepository(User::class)->findOneBy(['email' => $email])) {
-            throw new \ErrorException('Email already registered');
+        if ($isNew && $this->getEm()->getRepository(User::class)->findOneBy(['email' => $email])) {
+            throw new EmailAlreadyRegisteredException();
         }
     }
 
@@ -194,7 +200,7 @@ class SecurityService extends AbstractService
     {
         $options = ['options' => ['regexp' => self::CONFIRMATION_TOKEN_PATTERN]];
         if (!filter_var($token, FILTER_VALIDATE_REGEXP, $options)) {
-            throw new BadRequestHttpException('Confirmation token incorrect');
+            throw new ConfirmationTokenNotFoundException();
         }
     }
 
@@ -205,15 +211,14 @@ class SecurityService extends AbstractService
     private function validatePassword(string $password)
     {
         if (empty($password)) {
-            throw new BadRequestHttpException('Password required');
+            throw new PasswordRequiredException();
         }
 
         $options = ['options' => ['regexp' => self::USER_PASSWORD_PATTERN]];
         if (!filter_var($password, FILTER_VALIDATE_REGEXP, $options)) {
-            throw new BadRequestHttpException('Password format incorrect');
+            throw new PasswordInvalidException();
         }
     }
-
 
     /**
      * @param User $user

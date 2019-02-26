@@ -2,11 +2,11 @@
 namespace App\Security;
 
 use App\Entity\User;
+use App\Exception\Security\UserClassNotSupportedException;
+use App\Exception\Security\UserNotFoundException;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
-use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
-use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
 
 class UserProvider implements UserProviderInterface
 {
@@ -27,7 +27,7 @@ class UserProvider implements UserProviderInterface
         }
 
         if (!$user) {
-            throw new UsernameNotFoundException('User incorrect');
+            throw new UserNotFoundException();
         }
 
         return $user;
@@ -36,7 +36,9 @@ class UserProvider implements UserProviderInterface
     public function refreshUser(UserInterface $user)
     {
         if (!$user instanceof User) {
-            throw new UnsupportedUserException(sprintf('Instances of "%s" are not supported.', get_class($user)));
+            throw new UserClassNotSupportedException(
+                sprintf('Instances of "%s" are not supported.', get_class($user))
+            );
         }
 
         return $this->loadUserByUsername($user->getId());

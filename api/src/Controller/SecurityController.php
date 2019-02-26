@@ -2,57 +2,72 @@
 
 namespace App\Controller;
 
+use App\Controller\Controller;
 use App\Service\SecurityService;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * Class SecurityController
  * @package App\Controller
  *
  */
-class SecurityController
+class SecurityController extends Controller
 {
     /**
      * @Route("/register", methods={"POST"})
      *
-     * @return JsonResponse
-     */
-    public function registerAction()
-    {
-        return new JsonResponse(['status' => 'register']);
-    }
-
-    /**
-     * @Route("/confirm", methods={"POST"})
+     * @param Request $request
+     * @param SecurityService $security
      *
      * @return JsonResponse
+     * @throws \Exception
      */
-    public function confirmAction()
+    public function registerAction(Request $request, SecurityService $security)
     {
-        return new JsonResponse(['status' => 'confirm']);
+        ['email' => $email] = $this->getJsonContent($request);
+
+        $security->register($email);
+
+        return $this->json(null, Response::HTTP_NO_CONTENT);
     }
+
 
     /**
      * @Route("/forgot", methods={"POST"})
      *
+     * @param Request $request
+     * @param SecurityService $security
+     *
      * @return JsonResponse
+     * @throws \Exception
      */
-    public function forgotAction()
+    public function forgotAction(Request $request, SecurityService $security)
     {
-        return new JsonResponse(['status' => 'forgot']);
+        ['email' => $email] = $this->getJsonContent($request);
+
+        $security->forgot($email);
+
+        return $this->json(null, Response::HTTP_NO_CONTENT);
     }
 
     /**
      * @Route("/reset", methods={"POST"})
      *
+     * @param Request $request
+     * @param SecurityService $security
+     *
      * @return JsonResponse
+     * @throws \Exception
      */
-    public function resetAction()
+    public function resetAction(Request $request, SecurityService $security)
     {
-        return new JsonResponse(['status' => 'reset']);
+        ['token' => $token, 'password' => $password] = $this->getJsonContent($request);
+
+        $security->reset($token, $password);
+
+        return $this->json(null, Response::HTTP_NO_CONTENT);
     }
 
     /**
@@ -60,16 +75,14 @@ class SecurityController
      *
      * @param Request $request
      * @param SecurityService $security
+     *
      * @return JsonResponse
+     * @throws \Exception
      */
     public function loginAction(Request $request, SecurityService $security)
     {
-        try {
-            ['email' => $email, 'password' => $password] = json_decode($request->getContent(), true);
+        ['email' => $email, 'password' => $password] = $this->getJsonContent($request);
 
-            return new JsonResponse(['token' => $security->login($email, $password)]);
-        } catch (\Exception $e) {
-            return new JsonResponse(['message' => $e->getMessage()], Response::HTTP_INTERNAL_SERVER_ERROR);
-        }
+        return $this->json(['token' => $security->login($email, $password)]);
     }
 }

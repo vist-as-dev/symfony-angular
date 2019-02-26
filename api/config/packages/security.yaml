@@ -13,7 +13,7 @@ security:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
         auth:
-            pattern: ^/(register|reset|confirm|forgot|login)/
+            pattern: ^/(register|reset|forgot|login)/
             stateless: true
             security: false
         main:
