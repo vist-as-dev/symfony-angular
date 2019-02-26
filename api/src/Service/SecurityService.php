@@ -136,9 +136,9 @@ class SecurityService extends AbstractService
             throw new UserNotFoundException();
         }
 
-        $user->setConfirmationToken(random_bytes(32));
         $user->setCreatedAt(new \DateTime());
         $user->setLastActivity(new \DateTime());
+        $user->setConfirmationToken(random_bytes(32));
 
         $this->getEm()->flush();
 
