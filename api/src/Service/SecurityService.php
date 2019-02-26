@@ -236,9 +236,8 @@ class SecurityService extends AbstractService
             ->setFrom([getenv('EMAIL_FROM_ADDRESS') => getenv('EMAIL_FROM_NAME')])
             ->setTo($user->getEmail())
             ->setBody(
-                $this->getTwig()->render('email/register.twig', [
-                    'user' => $user,
-                    'confirmationUrl' => $link
+                $this->getTwig()->render('email/register.html.twig', [
+                    'link' => $link
                 ]), 'text/html'
             );
 
@@ -261,9 +260,8 @@ class SecurityService extends AbstractService
             ->setFrom([getenv('EMAIL_FROM_ADDRESS') => getenv('EMAIL_FROM_NAME')])
             ->setTo($user->getEmail())
             ->setBody(
-                $this->getTwig()->render('email/forgot.twig', [
-                    'user' => $user,
-                    'resetUrl' => $link
+                $this->getTwig()->render('email/forgot.html.twig', [
+                    'link' => $link
                 ]), 'text/html'
             );
 
