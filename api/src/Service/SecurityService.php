@@ -73,7 +73,7 @@ class SecurityService extends AbstractService
 
         $user = new User();
         $user->setEmail($email);
-        $user->setConfirmationToken(random_bytes(32));
+        $user->setConfirmationToken($this->createConfirmationToken());
         $user->setLastActivity(new \DateTime());
 
         $this->getEm()->persist($user);
@@ -136,9 +136,8 @@ class SecurityService extends AbstractService
             throw new UserNotFoundException();
         }
 
-        $user->setCreatedAt(new \DateTime());
         $user->setLastActivity(new \DateTime());
-        $user->setConfirmationToken(random_bytes(32));
+        $user->setConfirmationToken($this->createConfirmationToken());
 
         $this->getEm()->flush();
 
@@ -263,5 +262,16 @@ class SecurityService extends AbstractService
             );
 
         $this->getMailer()->send($message);
+    }
+
+    /**
+     * @param int $size
+     *
+     * @return string
+     * @throws \Exception
+     */
+    private function createConfirmationToken(int $size = 32)
+    {
+        return bin2hex(random_bytes($size));
     }
 }
