@@ -4,6 +4,7 @@ namespace App\Controller\Auxiliary;
 
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Routing\Annotation\Route;
 
 class OPTIONSController extends Controller
 {
