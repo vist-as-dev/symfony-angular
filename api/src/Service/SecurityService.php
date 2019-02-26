@@ -73,9 +73,7 @@ class SecurityService extends AbstractService
 
         $user = new User();
         $user->setEmail($email);
-        $user->setConfirmationToken(
-            $this->getEncoder()->encodePassword($user, random_bytes(8))
-        );
+        $user->setConfirmationToken(random_bytes(32));
         $user->setLastActivity(new \DateTime());
 
         $this->getEm()->persist($user);
@@ -138,9 +136,7 @@ class SecurityService extends AbstractService
             throw new UserNotFoundException();
         }
 
-        $user->setConfirmationToken(
-            $this->getEncoder()->encodePassword($user, random_bytes(8))
-        );
+        $user->setConfirmationToken(random_bytes(32));
         $user->setLastActivity(new \DateTime());
 
         $this->getEm()->flush();

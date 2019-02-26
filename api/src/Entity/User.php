@@ -40,7 +40,7 @@ class User implements UserInterface
     private $password;
 
     /**
-     * @ORM\Column(type="datetime_immutable", name="created_at", options={"default"="CURRENT_TIMESTAMP"})
+     * @ORM\Column(type="datetime_immutable", name="created_at")
      */
     private $createdAt;
 
