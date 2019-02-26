@@ -59,9 +59,14 @@ class User implements UserInterface
      */
     private $lastActivity;
 
+    /**
+     * User constructor.
+     *
+     * @throws \Exception
+     */
     public function __construct()
     {
-        $this->setCreatedAt(new \DateTime());
+        $this->setCreatedAt(new \DateTimeImmutable());
     }
 
     public function getId(): ?int
