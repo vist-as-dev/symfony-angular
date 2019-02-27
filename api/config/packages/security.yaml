@@ -19,7 +19,7 @@ security:
         main:
             stateless: true
             security: true
-            anonymous: true
+            anonymous: false
             guard:
                 authenticators:
                     - App\Security\TokenAuthenticator
