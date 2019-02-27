@@ -46,8 +46,11 @@ server {
 	server_name _;
 
 	set $request_url $request_uri;
-	if ($request_uri ~ ^/api/v0/(.*)(/?)$ ) {
-	    set $request_url $1;
+	if ($request_uri ~ ^/api/v0/(.*)/$ ) {
+	    set $request_url $1/;
+	}
+	if ($request_uri ~ ^/api/v0/(.*)([^/])$ ) {
+	    set $request_url $1$2/;
 	}
 
 	location ~ ^/api/public/index\.php(/|$) {
