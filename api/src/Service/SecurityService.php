@@ -155,7 +155,7 @@ class SecurityService extends AbstractService
         $this->validateConfirmationToken($token);
 
         /** @var User $user */
-        $user = $this->getEm()->getRepository(User::class)->findOneBy(['confirmation_token' => $token]);
+        $user = $this->getEm()->getRepository(User::class)->findOneBy(['confirmationToken' => $token]);
 
         if (!$user) {
             throw new ConfirmationTokenNotFoundException();
