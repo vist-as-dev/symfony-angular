@@ -13,11 +13,12 @@ use Symfony\Component\Routing\Annotation\Route;
  * Class SecurityController
  * @package App\Controller
  *
+ * @Route("/")
  */
 class SecurityController extends Controller
 {
     /**
-     * @Route("/register", methods={"POST"})
+     * @Route("register", methods={"POST"})
      *
      * @param Request $request
      * @param SecurityService $security
@@ -36,7 +37,7 @@ class SecurityController extends Controller
 
 
     /**
-     * @Route("/forgot", methods={"POST"})
+     * @Route("forgot", methods={"POST"})
      *
      * @param Request $request
      * @param SecurityService $security
@@ -54,7 +55,7 @@ class SecurityController extends Controller
     }
 
     /**
-     * @Route("/reset", methods={"POST"})
+     * @Route("reset", methods={"POST"})
      *
      * @param Request $request
      * @param SecurityService $security
@@ -72,7 +73,7 @@ class SecurityController extends Controller
     }
 
     /**
-     * @Route("/login", methods={"POST"})
+     * @Route("login", methods={"POST"})
      *
      * @param Request $request
      * @param SecurityService $security

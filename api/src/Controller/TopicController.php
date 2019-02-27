@@ -14,7 +14,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class TopicController
 {
     /**
-     * @Route("/")
+     * @Route("")
      *
      * @return JsonResponse
      */
