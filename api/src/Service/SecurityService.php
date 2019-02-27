@@ -276,8 +276,6 @@ class SecurityService extends AbstractService
      */
     private function isConfirmationTokenExpired(User $user)
     {
-        $lifetime = (int)eval('return '.getenv('CONFIRMATION_TOKEN_LIFETIME').';');
-
-        return (time() > ($user->getLastActivityTimestamp() + $lifetime));
+        return (time() > ($user->getLastActivityTimestamp() + (int)getenv('CONFIRMATION_TOKEN_LIFETIME')));
     }
 }

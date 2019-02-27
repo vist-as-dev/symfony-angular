@@ -60,8 +60,7 @@ class TokenAuthenticator extends AbstractGuardAuthenticator
             return null;
         }
 
-        $lifetime = (int)eval('return '.getenv('USER_TOKEN_LIFETIME').';');
-        if (time() > ($user->getLastActivityTimestamp() + $lifetime)) {
+        if (time() > ($user->getLastActivityTimestamp() + (int)getenv('USER_TOKEN_LIFETIME'))) {
             return null;
         } else {
             $user->setLastActivity(new \DateTime());
