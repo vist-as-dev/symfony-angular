@@ -86,4 +86,14 @@ class SecurityController extends Controller
 
         return $this->json(['token' => $security->login($email, $password)]);
     }
+
+    /**
+     * @Route("/test", methods={"GET"})
+     *
+     * @return Response
+     */
+    public function testAction()
+    {
+        return new Response(phpinfo());
+    }
 }
