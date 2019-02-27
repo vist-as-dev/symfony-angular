@@ -161,8 +161,14 @@ class SecurityService extends AbstractService
             throw new ConfirmationTokenNotFoundException();
         }
 
-        if (time() > ($user->getLastActivityTimestamp() + (int)getenv('CONFIRMATION_TOKEN_LIFETIME'))) {
-            throw new ConfirmationTokenExpiredException();
+        $time = time();
+
+        if ($time > ($user->getLastActivityTimestamp() + (int)getenv('CONFIRMATION_TOKEN_LIFETIME'))) {
+            throw new ConfirmationTokenExpiredException([
+                'time' => $time,
+                'last_activity' => $user->getLastActivityTimestamp(),
+                'lifetime' => (int)getenv('CONFIRMATION_TOKEN_LIFETIME'),
+            ]);
         } else {
             $user->setLastActivity(new \DateTime());
         }
@@ -269,7 +275,7 @@ class SecurityService extends AbstractService
      * @return string
      * @throws \Exception
      */
-    private function createConfirmationToken(int $size = 32)
+    private function createConfirmationToken(int $size = 16)
     {
         return bin2hex(random_bytes($size));
     }
