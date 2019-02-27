@@ -54,7 +54,7 @@ server {
 	}
 
 	location ~ ^/api/public/index\.php(/|$) {
-		alias /home/vist_as_dev/dev/test;
+		alias /home/vist_as_dev/dev/course;
 
 		fastcgi_pass unix:/var/run/php/php7.2-fpm.sock;
 		fastcgi_split_path_info ^(.+\.php)(/.*)$;
