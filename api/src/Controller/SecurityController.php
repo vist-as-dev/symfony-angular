@@ -84,6 +84,6 @@ class SecurityController extends Controller
     {
         ['email' => $email, 'password' => $password] = $this->getJsonContent($request);
 
-        return $this->json(['token' => $security->login($email, $password)]);
+        return $this->json($security->login($email, $password));
     }
 }
