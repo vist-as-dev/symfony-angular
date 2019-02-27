@@ -112,8 +112,6 @@ class SecurityService extends AbstractService
         return (string)(new Builder())
             ->setId($user->getId(), true)
             ->setIssuedAt(time())
-            ->setNotBefore(time())
-            ->setExpiration($this->getUserTokenExpiration())
             ->sign(new Sha256(), $user->getSalt())
             ->getToken();
     }
@@ -266,7 +264,7 @@ class SecurityService extends AbstractService
      * @return string
      * @throws \Exception
      */
-    private function randomToken(int $size = 16)
+    private function randomToken(int $size = 32)
     {
         return bin2hex(random_bytes($size));
     }
@@ -281,15 +279,5 @@ class SecurityService extends AbstractService
         $lifetime = (int)eval('return '.getenv('CONFIRMATION_TOKEN_LIFETIME').';');
 
         return (time() > ($user->getLastActivityTimestamp() + $lifetime));
-    }
-
-    /**
-     * @return int
-     */
-    private function getUserTokenExpiration()
-    {
-        $lifetime = (int)eval('return '.getenv('USER_TOKEN_LIFETIME').';');
-
-        return time() + $lifetime;
     }
 }
