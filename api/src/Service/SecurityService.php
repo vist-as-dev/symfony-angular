@@ -110,12 +110,10 @@ class SecurityService extends AbstractService
         $this->getEm()->flush();
 
         return (string)(new Builder())
-            ->setIssuer($this->getRequest()->getHost())
-            ->setAudience($this->getRequest()->getHost())
             ->setId($user->getId(), true)
             ->setIssuedAt(time())
-            ->setNotBefore(time() + 0)
-            ->setExpiration(time() + 3600)
+            ->setNotBefore(time())
+            ->setExpiration($this->getUserTokenExpiration())
             ->sign(new Sha256(), $user->getSalt())
             ->getToken();
     }
@@ -280,8 +278,18 @@ class SecurityService extends AbstractService
      */
     private function isConfirmationTokenExpired(User $user)
     {
-        $lifetime = eval('return '.getenv('CONFIRMATION_TOKEN_LIFETIME').';');
+        $lifetime = (int)eval('return '.getenv('CONFIRMATION_TOKEN_LIFETIME').';');
 
         return (time() > ($user->getLastActivityTimestamp() + $lifetime));
+    }
+
+    /**
+     * @return int
+     */
+    private function getUserTokenExpiration()
+    {
+        $lifetime = (int)eval('return '.getenv('USER_TOKEN_LIFETIME').';');
+
+        return time() + $lifetime;
     }
 }
