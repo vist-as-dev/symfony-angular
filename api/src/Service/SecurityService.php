@@ -34,8 +34,8 @@ class SecurityService extends AbstractService
         TraitTwig,
         TraitLogger;
 
-    const CONFIRMATION_TOKEN_PATTERN = '/^[a-z,A-Z,0-9,!/.+-@#$&*]{32,}$/';
-    const USER_PASSWORD_PATTERN = '/^(?=.*[A-Z])(?=.*[!@#$&*])(?=.*[0-9])(?=.*[a-z])[a-z,A-Z,0-9,!@#$&*]{8,}$/';
+    const CONFIRMATION_TOKEN_PATTERN = '/^[a-f,0-9]{32,}$/';
+    const USER_PASSWORD_PATTERN = '/^(?=.*[A-Z])(?=.*[!@#$%&*])(?=.*[0-9])(?=.*[a-z])[a-z,A-Z,0-9,!@#$%&*]{8,}$/';
 
     /**
      * AuthService constructor.
