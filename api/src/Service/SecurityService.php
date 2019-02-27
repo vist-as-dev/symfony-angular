@@ -105,7 +105,7 @@ class SecurityService extends AbstractService
         }
 
         $user->setLastActivity(new \DateTime());
-        $user->setSalt($this->randomToken(8));
+        $user->setSalt($this->randomToken());
 
         $this->getEm()->flush();
 
