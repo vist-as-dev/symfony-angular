@@ -8,8 +8,6 @@ use App\Exception\Security\AccessDeniedException;
 use App\Exception\Security\ConfirmationTokenExpiredException;
 use App\Exception\Security\ConfirmationTokenNotFoundException;
 use App\Exception\Security\EmailAlreadyRegisteredException;
-use App\Exception\Security\EmailInvalidException;
-use App\Exception\Security\PasswordInvalidException;
 use App\Exception\Security\PasswordRequiredException;
 use App\Exception\Security\UserNotFoundException;
 use App\Service\Traits\TraitEncoder;
@@ -37,7 +35,7 @@ class SecurityService extends AbstractService
         TraitLogger;
 
     const CONFIRMATION_TOKEN_PATTERN = '/^[a-z,A-Z,0-9,!/.+-@#$&*]{32,}$/';
-    const USER_PASSWORD_PATTERN = '/^(?=.*[A-Z])(?=.*[!@#$&*])(?=.*[0-9])(?=.*[a-z])[a-z,A-Z,0-9,!@#$&*]{8,}$/';
+    const USER_PASSWORD_PATTERN = '/^(?=.*[A-Z])(?=.*[!@#%$&*])(?=.*[0-9])(?=.*[a-z])[a-z,A-Z,0-9,!@#%$&*]{8,}$/';
 
     /**
      * AuthService constructor.
@@ -131,7 +129,7 @@ class SecurityService extends AbstractService
         $this->validateEmail($email);
 
         /** @var User $user */
-        $user = $this->getEm()->getRepository(User::class)->findOneBy(['email' => $email,]);
+        $user = $this->getEm()->getRepository(User::class)->findOneBy(['email' => $email]);
 
         if (!$user) {
             throw new UserNotFoundException();
