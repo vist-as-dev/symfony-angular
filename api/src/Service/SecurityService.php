@@ -85,7 +85,7 @@ class SecurityService extends AbstractService
      * @param string $email
      * @param string $password
      *
-     * @return Token
+     * @return string
      * @throws \Exception
      */
     public function login(string $email, string $password)
@@ -109,7 +109,7 @@ class SecurityService extends AbstractService
 
         $this->getEm()->flush();
 
-        return (new Builder())
+        return (string)(new Builder())
             ->setIssuer($this->getRequest()->getHost())
             ->setAudience($this->getRequest()->getHost())
             ->setId($user->getId(), true)
