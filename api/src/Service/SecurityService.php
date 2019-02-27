@@ -3,6 +3,7 @@
 namespace App\Service;
 
 use App\Entity\User;
+use App\Exception\Request\BadRequestException;
 use App\Exception\Security\AccessDeniedException;
 use App\Exception\Security\ConfirmationTokenExpiredException;
 use App\Exception\Security\ConfirmationTokenNotFoundException;
@@ -181,7 +182,7 @@ class SecurityService extends AbstractService
     private function validateEmail(string $email, $isNew = false)
     {
         if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-            throw new EmailInvalidException();
+            throw new BadRequestException(['email' => 'invalid']);
         }
 
         if ($isNew && $this->getEm()->getRepository(User::class)->findOneBy(['email' => $email])) {
@@ -212,7 +213,7 @@ class SecurityService extends AbstractService
 
         $options = ['options' => ['regexp' => self::USER_PASSWORD_PATTERN]];
         if (!filter_var($password, FILTER_VALIDATE_REGEXP, $options)) {
-            throw new PasswordInvalidException();
+            throw new BadRequestException(['password' => 'invalid']);
         }
     }
 
