@@ -167,7 +167,8 @@ class SecurityService extends AbstractService
             throw new ConfirmationTokenExpiredException([
                 'time' => $time,
                 'last_activity' => $user->getLastActivityTimestamp(),
-                'lifetime' => (int)getenv('CONFIRMATION_TOKEN_LIFETIME'),
+                'intlifetime' => (int)getenv('CONFIRMATION_TOKEN_LIFETIME'),
+                'lifetime' => getenv('CONFIRMATION_TOKEN_LIFETIME'),
             ]);
         } else {
             $user->setLastActivity(new \DateTime());
