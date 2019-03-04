@@ -1,15 +1,28 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, EventEmitter, OnInit, Output} from '@angular/core';
+import {Router} from "@angular/router";
+import {TranslatePipe} from "@ngx-translate/core";
+
+import {AuthService} from "@core/security/auth.service";
 
 @Component({
-  selector: 'app-full-layout-header',
-  templateUrl: './header.component.html',
-  styleUrls: ['./header.component.css']
+    selector: 'app-full-layout-header',
+    templateUrl: './header.component.html',
+    styleUrls: ['./header.component.css'],
+    providers: [TranslatePipe]
 })
 export class FullLayoutHeaderComponent implements OnInit {
 
-  constructor() { }
+    @Output() toggleSidenav = new EventEmitter<void>();
 
-  ngOnInit() {
-  }
+    constructor(private authService: AuthService,
+                private router: Router) {
+    }
 
+    public logout() {
+        this.authService.logout();
+        this.router.navigate(['/']);
+    }
+
+    ngOnInit(): void {
+    }
 }

@@ -1,11 +1,11 @@
 import {NgModule} from '@angular/core';
 import {Routes, RouterModule} from '@angular/router';
-import {SimpleLayoutComponent} from './layout/simple/simple.component';
+import {FullLayoutComponent} from "./layout/full/full.component";
 
 export const routes: Routes = [
     {
         path: '',
-        component: SimpleLayoutComponent,
+        component: FullLayoutComponent,
         data: {
             title: 'Home'
         },

@@ -1,3 +1,16 @@
-<p>
-  full works!
-</p>
+<div fxLayout="column" class="full-layout">
+    <div fxFlex="100%" class="full-layout-header">
+        <app-full-layout-header></app-full-layout-header>
+    </div>
+    <div fxFlex="100%" class="full-layout-body" fxLayout="row">
+        <div fxFlex="22%" class="full-layout-sidebar">
+            <app-full-layout-sidebar></app-full-layout-sidebar>
+        </div>
+        <div fxFlex="78%" class="full-layout-content">
+            <router-outlet></router-outlet>
+        </div>
+    </div>
+    <div fxFlex="100%" class="full-layout-footer">
+        <app-full-layout-footer></app-full-layout-footer>
+    </div>
+</div>

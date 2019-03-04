@@ -3,9 +3,8 @@ import {NgModule} from '@angular/core';
 import {NoopAnimationsModule} from '@angular/platform-browser/animations';
 
 import {AppComponent} from './app.component';
-
-import {CoreModule} from './core/core.module';
 import {AppRouting} from './app.route';
+import {CoreModule} from '@core/core.module';
 
 import {APP_SIMPLE_LAYOUT, APP_FULL_LAYOUT} from './layout';
 
