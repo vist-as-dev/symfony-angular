@@ -10,7 +10,7 @@ import {AuthService} from "@core/security/auth.service";
 })
 export class FullLayoutHeaderComponent implements OnInit {
 
-    @Output() toggleSidenav = new EventEmitter<void>();
+    @Output() toggleSideNav = new EventEmitter<void>();
 
     constructor(private authService: AuthService,
                 private router: Router) {

@@ -6,13 +6,9 @@ import {AppComponent} from './app.component';
 import {AppRouting} from './app.route';
 import {CoreModule} from '@core/core.module';
 
-import {APP_SIMPLE_LAYOUT, APP_FULL_LAYOUT} from './layout';
-
 @NgModule({
     declarations: [
         AppComponent,
-        ...APP_SIMPLE_LAYOUT,
-        ...APP_FULL_LAYOUT,
     ],
     imports: [
         BrowserModule,

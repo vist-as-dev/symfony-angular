@@ -1,10 +1,8 @@
 import {NgModule, Optional, SkipSelf} from '@angular/core';
 import {CommonModule} from '@angular/common';
 
-import {SingletonGuard} from './guard/singleton.guard';
 import {SecurityModule} from "./security/security.module";
-import {LocaleModule} from "./locale/locale.module";
-import {UiModule} from "./ui/ui.module";
+import {LayoutModule} from "./layout/layout.module";
 
 @NgModule({
     declarations: [],
@@ -12,18 +10,19 @@ import {UiModule} from "./ui/ui.module";
         CommonModule,
 
         SecurityModule,
-        LocaleModule,
-        UiModule,
+        LayoutModule,
     ],
     exports: [
         SecurityModule,
-        LocaleModule,
-        UiModule,
+        LayoutModule,
     ]
 })
-export class CoreModule extends SingletonGuard { // Ensure that CoreModule is only loaded into AppModule
-    // Looks for the module in the parent injector to see if it's already been loaded (only want it loaded once)
+export class CoreModule {
     constructor(@Optional() @SkipSelf() parentModule: CoreModule) {
-        super(parentModule);
+        if (parentModule) {
+            throw new Error(
+                `${parentModule.constructor.name} has already been loaded. Import this module in the AppModule only.`
+            );
+        }
     }
 }

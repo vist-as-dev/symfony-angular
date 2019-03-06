@@ -9,3 +9,5 @@ export const APP_FULL_LAYOUT = [
     FullLayoutFooterComponent,
     FullLayoutSidebarComponent,
 ];
+
+export {FullLayoutComponent} from './full.component';
